@@ -14,16 +14,25 @@ public class UserService {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public boolean authenticate(User user) {
-        User existingUser = userRepository.findByUsername(user.getUsername());
-        if (existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
-            return true;
-        }
-        return false;
+    public boolean authenticate(String username, String password) {
+        User existingUser = userRepository.findByUsername(username);
+        return existingUser != null && passwordEncoder.matches(password, existingUser.getPassword());
     }
 
-    public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+    public void register(String username, String password, String fullName, String email) {
+        User newUser = new User();
+        newUser.setUsername(username);
+        newUser.setPassword(passwordEncoder.encode(password));
+        newUser.setFullName(fullName);
+        newUser.setEmail(email);
+        userRepository.save(newUser);
+    }
+
+    public void changePassword(String username, String newPassword) {
+        User existingUser = userRepository.findByUsername(username);
+        if (existingUser != null) {
+            existingUser.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(existingUser);
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.example.ibericomicsapi.controller;
 
-import com.example.ibericomicsapi.model.Page;
-import com.example.ibericomicsapi.repository.PageRepository;
+import com.example.ibericomicsapi.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +11,10 @@ import java.util.List;
 public class PageController {
 
     @Autowired
-    private PageRepository pageRepository;
+    private PageService pageService;
 
-    @GetMapping("/{chapterId}")
-    public List<Page> getPagesByChapterId(@PathVariable int chapterId) {
-        return pageRepository.findByChapterId(chapterId);
+    @GetMapping("/chapter/{chapterId}")
+    public List<String> getPagesByChapterId(@PathVariable int chapterId) {
+        return pageService.findPagesByChapterId(chapterId);
     }
 }

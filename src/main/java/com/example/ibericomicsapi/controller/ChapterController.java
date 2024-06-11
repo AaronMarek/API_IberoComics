@@ -1,7 +1,7 @@
 package com.example.ibericomicsapi.controller;
 
 import com.example.ibericomicsapi.model.Chapter;
-import com.example.ibericomicsapi.repository.ChapterRepository;
+import com.example.ibericomicsapi.service.ChapterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +12,10 @@ import java.util.List;
 public class ChapterController {
 
     @Autowired
-    private ChapterRepository chapterRepository;
+    private ChapterService chapterService;
 
-    @GetMapping("/{comicId}")
-    public List<Chapter> getChaptersByComicId(@PathVariable int comicId) {
-        return chapterRepository.findByComicId(comicId);
+    @GetMapping("/comic/{comicId}")
+    public List<String> getChaptersByComicId(@PathVariable int comicId) {
+        return chapterService.findChaptersByComicId(comicId);
     }
-
 }
